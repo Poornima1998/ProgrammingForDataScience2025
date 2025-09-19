@@ -10,10 +10,13 @@ class Person:
         return f'{self.name} ({self.person_id})'
 
     def get_responsibilities(self):
-        """General responsibilities of a person"""
+        """General responsibilities of a person
+        To be overridden in subclasses (e.g., Student, Faculty, Staff) with specific duties."""
         return "General resonsibilities as a member of the university"
 
 class Staff(Person):
-    """University staff member"""
+    """University staff member
+    Overrides `get_responsibilities` from the Person base class
+    """
     def get_responsibilities(self):
         return "Support tasks"
