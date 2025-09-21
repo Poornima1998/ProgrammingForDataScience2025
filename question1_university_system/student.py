@@ -2,15 +2,11 @@
 from person import Person
 
 class Student(Person):   # Inherit from Person now
-    """Base student class.
-    Student inherits from Person (reusability of common attributes like id, name, email).
-    Maintains semester-wise course enrollment and GPA calculation.
-    Specialized subclasses for Undergraduate and Graduate students extend responsibilities."""
 
     def __init__(self, person_id, name, email=None): #Inherit from person
-        super().__init__(person_id, name, email)  # call Person's __init__
-        self.semesters = {}  # semester -> list of courses
-        self.current_enrollments = []  # courses not yet graded
+        super().__init__(person_id, name, email)
+        self.semesters = {}
+        self.current_enrollments = []
 
     def enroll_course(self, semester, course_code, credits):
         """Enroll in a course for a semester."""

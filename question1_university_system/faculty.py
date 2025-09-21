@@ -9,16 +9,11 @@ class Faculty(Person):
         self.course_teaching = [] #list of course they are assigned
 
     def get_responsibilities(self):
-        """Define responsibilities of a generic faculty member
-        Default behavior (teaching & advising) overridden by subclasses.
-        Demonstrates polymorphism."""
+        #Define responsibilities of a generic faculty member
         return "Teach, advice for students" #default weekly hours
 
     def calculated_workload(self):
-        """Calculate weekly workload in hours
-        Default workload set to 40 hrs/week.
-        Specific roles (Professor, Lecturer, TA) override this with values.
-        """
+        #Calculate weekly workload in hours. Default workload set to 40 hrs/week.
         return 40.0
 
 class Professor(Faculty):

@@ -17,13 +17,6 @@ class Department:
         self.faculty.append(faculty_id)
 
     def register_student(self, student, semester, course_code): #Register a student for a course in a given semester
-        """
-        Flow:
-        1. Check if course exists in department
-        2. Validate that student meets all prerequisites
-        3. Check if course has available capacity
-        4. Enroll student in course and update their academic record
-        """
         if course_code not in self.courses:
             raise ValueError("Course not added")
         course = self.courses[course_code]
