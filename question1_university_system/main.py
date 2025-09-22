@@ -1,49 +1,45 @@
-from faculty import Professor, Lecturer, TA
-from student import UndergraduateStudent, GraduateStudent, SecureStudentRecord
-from staff import Staff
+from person import Person
+from student import Student
+from faculty import Faculty
+from department import Department
 
-"""
-Create faculty, student, and staff objects.
-Demonstrate polymorphism by calling role wise responsibilities
-Show student enrollment, grading, GPA calculation, and academic status
-"""
-def demo():
-    # Faculty
-    p1 = Professor("F001", "Dr. Dileepa")
-    p2 = Lecturer("F002", "Anurangi")
-    p3 = TA("F003", "Nuran")
 
-    # Students
-    s1 = UndergraduateStudent("S001", "Dave")
-    s2 = GraduateStudent("S002", "Eve")
+def main():
+    # Create department
+    cs_department = Department("Computer Science")
 
-    # Staff
-    st1 = Staff("ST001", "Kamal", role="Administrator")
-    st2 = Staff("ST002", "Nimali", role="Librarian")
+    # Add faculty
+    p1 = Faculty(101, "Dr. Dileepa", "dileepa@nibm.lk", "Professor")
+    p2 = Faculty(102, "Mrs. Anurangi", "anurangi@nibm.lk", "TA")
+    cs_department.add_faculty(p1)
+    cs_department.add_faculty(p2)
 
-    """Secure record for graduate student
-    Demonstrates encapsulation (private attributes + validation)"""
-    secure = SecureStudentRecord(s2)
+    # Create a student
+    s1 = Student(201, "Poornima Weerasinghe", "poornima.w@nibm.lk", "Undergraduate")
 
-    # Print faculty
-    # Polymorphism: Each faculty subclass overrides get_responsibilities()
-    for f in [p1, p2, p3]:
-        print(f.describe(), "->", f.get_responsibilities())
+    # Enroll student in courses
+    s1.enroll_course("Programming for Data Science")
+    s1.semester_grades = {
+        "2024": [3.5, 4.0, 3.7],
+        "2025": [3.8, 3.9, 3.6]
+    }
 
-    # Print students
-    # Polymorphism: Undergrad vs Graduate students may have different responsibilities
-    for s in [s1, s2]:
-        print(s.describe(), "->", s.get_responsibilities())
+    # Print stuff demonstrating polymorphism
+    people = [p1, p2, s1]
 
-    # Enroll student and record grade (enrollment + GPA)
-    s1.enroll_course("Fall2025", "CS101", 3) #enroll a student into a course with credits
-    s1.record_grade("Fall2025", "CS101", 3.5) #record a grade for the enrolled course
-    print("GPA:", s1.calculate_gpa()) #calculate GPA from recorded grades
-    print("Academic Status:", s1.get_academic_status()) #determine academic standing
+    for person in people:
+        print(f"{person.name}: {person.get_responsibilities()}")
 
-    # Print staff (override staff roles)
-    for staff in [st1, st2]:
-        print(staff.describe(), "->", staff.get_responsibilities())
+    # Display GPA and status
+    print(f"{s1.name} GPA: {s1.calculate_gpa()}")
+    print(f"{s1.name} Academic Status: {s1.get_academic_status()}")
+
+    # Show department info
+    print(f"Department: {cs_department.name}")
+    print("Faculty Members:")
+    for fac in cs_department.faculty_members:
+        print(f"- {fac.name} ({fac.faculty_type})")
+
 
 if __name__ == "__main__":
-    demo()
+    main()

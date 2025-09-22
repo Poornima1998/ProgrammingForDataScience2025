@@ -10,7 +10,3 @@ class Person:
 
     def get_responsibilities(self):
         return "General resonsibilities as a member of the university"
-
-class Staff(Person):
-    def get_responsibilities(self):
-        return "Support tasks"
