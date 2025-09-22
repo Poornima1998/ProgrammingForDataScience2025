@@ -1,24 +1,20 @@
 from data_collection.scrape_books import scrape_books
 from data_processing.clean_data import clean_data
-from analysis.descriptive_stats import descriptive_stats
-from analysis.predictive_analysis import predictive_analysis
-from visualizations.plots import create_plots
+from analysis.descriptive_stats import analyze_data
+from analysis.predictive_model import predictive_model
 
 def main():
-    print("Step 1: Scraping books data...")
-    scrape_books(pages=5, output_file="books_raw.csv")
+    # Step 1: Collect the data
+    data = scrape_books()
 
-    print("\nStep 2: Cleaning data...")
-    clean_data(input_file="books_raw.csv", output_file="books_clean.csv")
+    # Step 2: Clean the data
+    clean_df = clean_data(data)
 
-    print("\nStep 3: Descriptive Statistics...")
-    descriptive_stats(input_file="books_clean.csv")
+    # Step 3: Analyze the data
+    analyze_data(clean_df)
 
-    print("\nStep 4: Predictive Analysis...")
-    predictive_analysis(input_file="books_clean.csv")
+    # Step 4: Build predictive model
+    predictive_model(clean_df)
 
-    print("\nStep 5: Generating Visualizations...")
-    create_plots(input_file="books_clean.csv")
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()

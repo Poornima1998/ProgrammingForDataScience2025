@@ -1,19 +1,18 @@
-# This script performs basic statistical analysis on the cleaned dataset
+import seaborn as sns
+import matplotlib.pyplot as plt
 
-import pandas as pd
+def analyze_data(df):
+    print("Summary Statistics:")
+    print(df.describe())
 
-def descriptive_stats(input_file="books_clean.csv"):
-    """Generate and display descriptive statistics."""
-    df = pd.read_csv(input_file)
+    # Plot histogram of prices
+    sns.histplot(df['Price'], bins=10, kde=True)
+    plt.title('Price Distribution')
+    plt.xlabel('Price (£)')
+    plt.ylabel('Count')
+    plt.show()
 
-    print("\n--- Descriptive Statistics ---")
-    print(df.describe(include="all"))
-
-    avg_price = df["price"].mean()
-    avg_rating = df["rating"].mean()
-
-    print(f"\nAverage Price: £{avg_price:.2f}")
-    print(f"Average Rating: {avg_rating:.2f} / 5")
-
-    df.describe(include="all").to_csv("descriptive_stats.csv")
-    print("Descriptive statistics saved to descriptive_stats.csv")
+    # Scatter plot Price vs Rating
+    sns.scatterplot(x='Rating', y='Price', data=df)
+    plt.title('Price vs Rating')
+    plt.show()

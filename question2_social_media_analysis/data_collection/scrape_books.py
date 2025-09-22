@@ -1,32 +1,28 @@
 import requests
 from bs4 import BeautifulSoup
-import csv
+import pandas as pd
+import re
 
-BASE_URL = "http://books.toscrape.com/"
+def scrape_books():
+    # Website to scrape
+    url = 'http://books.toscrape.com/catalogue/category/books_1/index.html'
+    response = requests.get(url)
 
-def scrape_books(pages=5, output_file="books_raw.csv"):
-    """Scrape book data from books.toscrape.com and save to CSV."""
+    # Parse the HTML content
+    soup = BeautifulSoup(response.text, 'html.parser')
     books = []
-    for page_num in range(1, pages + 1):
-        url = BASE_URL if page_num == 1 else f"{BASE_URL}catalogue/page-{page_num}.html"
-        try:
-            response = requests.get(url)
-            response.raise_for_status()
-            soup = BeautifulSoup(response.text, "html.parser")
 
-            for article in soup.select("article.product_pod"):
-                title = article.h3.a["title"]
-                price = article.select_one(".price_color").text.strip()
-                rating = article.p["class"][1]
+    for book in soup.find_all('article', class_='product_pod'):
+        title = book.h3.a['title']
+        price_text = book.find('p', class_='price_color').text
+        # Clean price to remove currency symbols and weird chars
+        price_number = re.sub(r'[^\d.]', '', price_text)
+        price = float(price_number)
+        rating_class = book.p['class'][1]
+        # Map rating word to number
+        rating_map = {'One':1, 'Two':2, 'Three':3, 'Four':4, 'Five':5}
+        rating = rating_map.get(rating_class, 0)
 
-                books.append([title, price, rating])
+        books.append({'Title': title, 'Price': price, 'Rating': rating})
 
-        except Exception as e:
-            print(f"Error on page {page_num}: {e}")
-
-    with open(output_file, "w", newline="", encoding="utf-8") as f:
-        writer = csv.writer(f)
-        writer.writerow(["title", "price", "rating"])
-        writer.writerows(books)
-
-    print(f"Scraping complete! Data saved to {output_file}")
+    return pd.DataFrame(books)
