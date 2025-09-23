@@ -1,20 +1,22 @@
 from data_collection.scrape_books import scrape_books
-from data_processing.clean_data import clean_data
-from analysis.descriptive_stats import analyze_data
-from analysis.predictive_model import predictive_model
+from data_processing.clean_data import clean_books_data
+from analysis.descriptive_stats import summarize
+from analysis.advanced_stats import advanced_stats
+from analysis.predictive_model import price_predictor
+from visualizations.plots import plot_hist, plot_scatter
+from visualizations.interactive_plots import interactive_hist
 
-def main():
-    # Step 1: Collect the data
-    data = scrape_books()
-
-    # Step 2: Clean the data
-    clean_df = clean_data(data)
-
-    # Step 3: Analyze the data
-    analyze_data(clean_df)
-
-    # Step 4: Build predictive model
-    predictive_model(clean_df)
-
-if __name__ == '__main__':
-    main()
+if __name__ == "__main__":
+    # Collect and save raw data
+    df_raw = scrape_books(pages=3)
+    # Clean data
+    df_clean = clean_books_data("books_data.csv")
+    # Stats and analysis
+    summarize(df_clean)
+    advanced_stats(df_clean)
+    # Visualizations
+    plot_hist(df_clean)
+    plot_scatter(df_clean)
+    interactive_hist(df_clean)
+    # Predictive model
+    price_predictor(df_clean)

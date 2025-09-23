@@ -1,30 +1,25 @@
 from person import Person
 
 class Student(Person):
-    def __init__(self, person_id, name, email, level):
+    def __init__(self, person_id, name, email, student_type):
         super().__init__(person_id, name, email)
-        self.level = level  # 'Undergraduate' or 'Graduate'
-        self.courses = []
-        self.semester_grades = {}
+        self.student_type = student_type  # 'Undergraduate' or 'Graduate'
+        self._courses = []
+        self._gpa_record = {}  # semester -> GPA
 
     def enroll_course(self, course):
-        if course not in self.courses:
-            self.courses.append(course)
+        if course not in self._courses:
+            self._courses.append(course)
 
     def drop_course(self, course):
-        if course in self.courses:
-            self.courses.remove(course)
+        if course in self._courses:
+            self._courses.remove(course)
 
     def calculate_gpa(self):
-        total_points = 0
-        total_courses = 0
-        for grades in self.semester_grades.values():
-            for grade in grades:
-                total_points += grade
-                total_courses += 1
-        if total_courses == 0:
+        if not self._gpa_record:
             return 0.0
-        return round(total_points / total_courses, 2)
+        total = sum(self._gpa_record.values())
+        return round(total / len(self._gpa_record), 2)
 
     def get_academic_status(self):
         gpa = self.calculate_gpa()
@@ -35,5 +30,29 @@ class Student(Person):
         else:
             return "Good Standing"
 
+    def get_courses(self):
+        return self._courses
+
+    def add_gpa(self, semester, gpa):
+        if 0.0 <= gpa <= 4.0:
+            self._gpa_record[semester] = gpa
+        else:
+            raise ValueError("GPA must be between 0.0 and 4.0")
+
     def get_responsibilities(self):
-        return "Attend classes, complete assignments and exams"
+        return "Attend classes, complete assignments, and exams"
+
+# Encapsulation with SecureStudentRecord
+class SecureStudentRecord:
+    def __init__(self, student):
+        self.__student = student
+        self.__gpa = 0.0
+
+    def set_gpa(self, gpa):
+        if 0.0 <= gpa <= 4.0:
+            self.__gpa = gpa
+        else:
+            raise ValueError("GPA out of range")
+
+    def get_gpa(self):
+        return self.__gpa

@@ -1,26 +1,10 @@
-import numpy as np
-import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
+import numpy as np
 
-def predictive_model(df):
-    # Prepare data
-    X = df[['Rating']].values
-    y = df['Price'].values
-
-    # Create linear regression model
-    model = LinearRegression()
-    model.fit(X, y)
-
-    print(f"Model Coefficient (Effect of Rating on Price): {model.coef_[0]:.2f}")
-    print(f"Model Intercept: {model.intercept_:.2f}")
-
-    # Predict prices for ratings 1 to 5
-    rating_test = np.array([[i] for i in range(1,6)])
-    price_pred = model.predict(rating_test)
-
-    # Plot predictions
-    plt.plot(rating_test, price_pred, marker='o')
-    plt.title('Predicted Price by Rating')
-    plt.xlabel('Rating')
-    plt.ylabel('Predicted Price (£)')
-    plt.show()
+def price_predictor(df):
+    X = df[["rating"]].values
+    y = df["price"].values
+    model = LinearRegression().fit(X, y)
+    print("Regression coefficient:", model.coef_[0])
+    print("Intercept:", model.intercept_)
+    return model

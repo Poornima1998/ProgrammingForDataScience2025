@@ -1,28 +1,25 @@
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
+import time
 import re
 
-def scrape_books():
-    # Website to scrape
-    url = 'http://books.toscrape.com/catalogue/category/books_1/index.html'
-    response = requests.get(url)
-
-    # Parse the HTML content
-    soup = BeautifulSoup(response.text, 'html.parser')
+def scrape_books(pages=3, delay=2):
     books = []
-
-    for book in soup.find_all('article', class_='product_pod'):
-        title = book.h3.a['title']
-        price_text = book.find('p', class_='price_color').text
-        # Clean price to remove currency symbols and weird chars
-        price_number = re.sub(r'[^\d.]', '', price_text)
-        price = float(price_number)
-        rating_class = book.p['class'][1]
-        # Map rating word to number
-        rating_map = {'One':1, 'Two':2, 'Three':3, 'Four':4, 'Five':5}
-        rating = rating_map.get(rating_class, 0)
-
-        books.append({'Title': title, 'Price': price, 'Rating': rating})
-
-    return pd.DataFrame(books)
+    for page in range(1, pages+1):
+        url = f"http://books.toscrape.com/catalogue/page-{page}.html"
+        resp = requests.get(url)
+        if resp.status_code != 200:
+            break
+        soup = BeautifulSoup(resp.content, "html.parser")
+        for book in soup.find_all('article', class_='product_pod'):
+            title = book.h3.a['title']
+            price = float(re.sub(r'[^\d.]', '', book.find('p', class_='price_color').text))
+            rating_map = {'One':1, 'Two':2, 'Three':3, 'Four':4, 'Five':5}
+            rating = rating_map.get(book.p['class'][1], 0)
+            books.append({"title": title, "price": price, "rating": rating})
+        print(f"Scraped page {page}")
+        time.sleep(delay)
+    df = pd.DataFrame(books)
+    df.to_csv("books_data.csv", index=False)
+    return df

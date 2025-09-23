@@ -1,8 +1,8 @@
-def clean_data(df):
-    # Remove duplicate rows
-    df = df.drop_duplicates()
-    # Remove missing values
-    df = df.dropna()
-    # Normalize the Title by stripping spaces and changing to lowercase
-    df['Title'] = df['Title'].str.strip().str.lower()
+import pandas as pd
+import re
+
+def clean_books_data(filename):
+    df = pd.read_csv(filename)
+    df = df.drop_duplicates().dropna()
+    df['title'] = df['title'].apply(lambda x: re.sub(r"[^a-zA-Z0-9\s]", "", str(x)).strip().lower())
     return df

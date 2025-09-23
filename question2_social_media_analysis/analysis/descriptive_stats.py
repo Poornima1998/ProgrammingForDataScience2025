@@ -1,18 +1,5 @@
-import seaborn as sns
-import matplotlib.pyplot as plt
-
-def analyze_data(df):
-    print("Summary Statistics:")
+def summarize(df):
+    print("Summary statistics:")
     print(df.describe())
-
-    # Plot histogram of prices
-    sns.histplot(df['Price'], bins=10, kde=True)
-    plt.title('Price Distribution')
-    plt.xlabel('Price (£)')
-    plt.ylabel('Count')
-    plt.show()
-
-    # Scatter plot Price vs Rating
-    sns.scatterplot(x='Rating', y='Price', data=df)
-    plt.title('Price vs Rating')
-    plt.show()
+    print("Number of books:", len(df))
+    print("Most common rating:", df['rating'].mode()[0])

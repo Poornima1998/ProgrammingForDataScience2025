@@ -1,24 +1,23 @@
 class Course:
-    """Represents a course"""
-
-    #initialize a new course object
-    def __init__(self, code, title, credits, enrollement_limit=30, prerequisites=None):
+    def __init__(self, code, title, max_enrollment=30, prerequisites=None):
         self.code = code
         self.title = title
-        self.credits = credits
-        self.enrollement_limit = enrollement_limit #maximum nu of students in the course
-        self.prerequisites = prerequisites or [] #List of course codes required before enrolling
-        self.enrolled_students = [] # Stores student IDs of enrolled students.
+        self.max_enrollment = max_enrollment
+        self.prerequisites = prerequisites or []
+        self.enrolled_students = []
 
     def has_capacity(self):
-        #check if the course still has available seats
-        return len(self.enrolled_students) < self.enrollement_limit
+        return len(self.enrolled_students) < self.max_enrollment
 
-    def add_student(self, student_id):
-        # Add a student if there's space and not already enrolled
+    def enroll_student(self, student):
+        # Check prerequisite courses
+        if any(prereq not in student.get_courses() for prereq in self.prerequisites):
+            raise ValueError(f"Student lacks prerequisites for {self.title}")
         if not self.has_capacity():
-            raise ValueError("Course is full")
-        if student_id in self.enrolled_students:
-            raise ValueError("Student already enrolled")
-        self.enrolled_students.append(student_id)
+            raise ValueError("Course full")
+        if student not in self.enrolled_students:
+            self.enrolled_students.append(student)
 
+    def drop_student(self, student):
+        if student in self.enrolled_students:
+            self.enrolled_students.remove(student)
