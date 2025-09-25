@@ -1,8 +1,10 @@
+import re
+import time
+
+import pandas as pd
 import requests
 from bs4 import BeautifulSoup
-import pandas as pd
-import time
-import re
+
 
 def scrape_books(pages=3, delay=2):
     books = []
