@@ -1,5 +1,4 @@
 from sklearn.linear_model import LinearRegression
-import numpy as np
 
 def price_predictor(df):
     X = df[["rating"]].values

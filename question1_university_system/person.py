@@ -9,4 +9,4 @@ class Person:
         return f'{self.name} ({self.person_id})'
 
     def get_responsibilities(self):
-        return "General resonsibilities as a member of the university"
+        return "Main responsibilities"

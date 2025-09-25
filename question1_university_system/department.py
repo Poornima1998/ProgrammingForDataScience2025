@@ -1,5 +1,5 @@
-from faculty import Faculty
-from student import Student
+from question1_university_system.faculty import Faculty
+
 
 class Department:
     def __init__(self, name):

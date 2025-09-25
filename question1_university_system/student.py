@@ -1,11 +1,12 @@
-from person import Person
+from question1_university_system.person import Person
+
 
 class Student(Person):
     def __init__(self, person_id, name, email, student_type):
         super().__init__(person_id, name, email)
-        self.student_type = student_type  # 'Undergraduate' or 'Graduate'
+        self.student_type = student_type  #Undergraduate or Graduate
         self._courses = []
-        self._gpa_record = {}  # semester -> GPA
+        self._gpa_record = {}  #semester GPA
 
     def enroll_course(self, course):
         if course not in self._courses:
@@ -42,8 +43,16 @@ class Student(Person):
     def get_responsibilities(self):
         return "Attend classes, complete assignments, and exams"
 
-# Encapsulation with SecureStudentRecord
-class SecureStudentRecord:
+class UndergraduateStudent(Student):
+    def __init__(self, student_id, name, email):
+        super().__init__(student_id, name, email, student_type='Undergraduate')
+
+class GraduateStudent(Student):
+    def __init__(self, student_id, name, email):
+        super().__init__(student_id, name, email, student_type='Graduate')
+
+# Encapsulation with StudentRecord
+class StudentRecord:
     def __init__(self, student):
         self.__student = student
         self.__gpa = 0.0

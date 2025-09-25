@@ -1,4 +1,5 @@
-from person import Person
+from question1_university_system.person import Person
+
 
 class Faculty(Person):
     def __init__(self, person_id, name, email, faculty_type):
@@ -7,17 +8,17 @@ class Faculty(Person):
 
     def get_responsibilities(self):
         if self.faculty_type == "Professor":
-            return "Conduct research, teach courses, advise students"
+            return "Teach and advise students"
         elif self.faculty_type == "Lecturer":
-            return "Teach courses and prepare materials"
+            return "Teach courses and prepare papers"
         elif self.faculty_type == "TA":
-            return "Assist in teaching and grading"
+            return "Support lecturers"
         else:
             return super().get_responsibilities()
 
     def calculate_workload(self):
         if self.faculty_type == "Professor":
-            return 40  # Hours per week
+            return 40  #Hours per week
         elif self.faculty_type == "Lecturer":
             return 30
         elif self.faculty_type == "TA":

@@ -6,18 +6,19 @@ class Course:
         self.prerequisites = prerequisites or []
         self.enrolled_students = []
 
-    def has_capacity(self):
+    def capacity(self):
         return len(self.enrolled_students) < self.max_enrollment
 
     def enroll_student(self, student):
-        # Check prerequisite courses
-        if any(prereq not in student.get_courses() for prereq in self.prerequisites):
-            raise ValueError(f"Student lacks prerequisites for {self.title}")
-        if not self.has_capacity():
-            raise ValueError("Course full")
+        #Check prerequisite courses
+        for prereq in self.prerequisites:
+            if prereq not in student.get_courses():
+                raise ValueError(f"Student is not eligible for {self.title}")
+        if not self.capacity():
+            raise ValueError("Course is full")
         if student not in self.enrolled_students:
             self.enrolled_students.append(student)
 
-    def drop_student(self, student):
+    def remove_student(self, student):
         if student in self.enrolled_students:
             self.enrolled_students.remove(student)

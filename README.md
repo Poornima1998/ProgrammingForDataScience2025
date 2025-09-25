@@ -9,7 +9,9 @@ Repository Structure:
 │ ├── person.py         #Base person class
 │ ├── student.py        #Student class and subclasses
 │ ├── faculty.py        #Faculty class and roles
-│ └── department.py     #Department and course management
+│ ├── department.py     #Department management
+│ ├── course.py         #Course of the management
+│ └── staff.py          #Staff class
 
 How to run:
 1. Ensure python 3 is installed.
